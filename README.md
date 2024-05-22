@@ -14,8 +14,8 @@ library(data.table) # Trabalhando com objetos do tipo dataframe
 ````
 
 ## Baixando Diários
-A primeira parte do script baixa os arquivos do DOES para uma pasta de sua escolha
-Se certifique que o diretório de trabalho da sessão não possui arquivos '.pdf' (preferencialmente, crie uma pasta nova e cole o caminho dela entre as aspas do comando ```setwd("")```
+A primeira parte do script baixa os arquivos do DOES para uma pasta de sua escolha.  <br>
+Se certifique que o diretório de trabalho da sessão não possui arquivos '.pdf' (preferencialmente, crie uma pasta nova e cole o caminho dela entre as aspas do comando ```setwd("")```.  <br>
 Certifique-se que o caminho está com forward slash ("/"):
 ````R
 setwd("C:/Users/Fulano/Desktop/Pasta01/DOES")
@@ -25,8 +25,8 @@ Em seguida, defina o intervado de tempo que iremos trabalhar:
 dia_inicial <- ("2024-04-30") # exemplo, formato ano/mes/dia
 dia_final <- ("2024-05-07") # exemplo, formato ano/mes/dia
 ````
-Defina os termos que serão buscados.
-Podem ser quantos termos forem necessários, mas certifique-se que estão acentuados conforme aparecem em documentos oficiais.
+Defina os termos que serão buscados. <br>
+Podem ser quantos termos forem necessários, mas certifique-se que estão acentuados conforme aparecem em documentos oficiais. <br>
 Pode ser nomes de pessoas, empresas, CNPJs, entre outros. Caso for um CNPJ, certifique-se de incluir tanto um termo contendo traços e barras, quanto apenas com os números.:
 ````R
 buscar_por <- paste0(c("Educação Infantil", "Sistema de educação"), collapse = "|") # exemplos
@@ -111,5 +111,5 @@ vy1A
 19 DO20240506_9067ES    201
 20 DO20240506_9067ES    212
 ````
-DO20240430 = Diário Oficial 2024-04-30 [ano, mês, dia]
+DO20240430 = Diário Oficial 2024-04-30 [ano, mês, dia] <br>
 9067ES = Identificador único do arquivo (caso haja mais de 1 DO por dia).
