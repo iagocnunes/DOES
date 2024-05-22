@@ -16,7 +16,7 @@ library(data.table) # Trabalhando com objetos do tipo dataframe
 ## Baixando Diários
 A primeira parte do script baixa os arquivos do DOES para uma pasta de sua escolha
 Se certifique que o diretório de trabalho da sessão não possui arquivos '.pdf' (preferencialmente, crie uma pasta nova e cole o caminho dela entre as aspas do comando ```setwd("")```
-Certifique-se que o caminho está com foward slash ("/"):
+Certifique-se que o caminho está com forward slash ("/"):
 ````R
 setwd("C:/Users/Fulano/Desktop/Pasta01/DOES")
 ````
