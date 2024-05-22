@@ -1,4 +1,4 @@
-Projeto: Monitoramento do Diário Oficial do Espírito Santo
+Projeto: Monitoramento do Diário Oficial do Espírito Santo<br>
 Autor: Iago de Carvalho Nunes - contato: github.com/iagocnunes iagodcn@gmail.com
 
 ## Pacotes de trabalho
