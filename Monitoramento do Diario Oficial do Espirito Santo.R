@@ -6,17 +6,18 @@ library(httr2)
 library(tm)
 library(sjmisc)
 library(chron)
+library(data.table)
 
 # Se certifique que o diretorio de trabalho da sessao nao possui arquivos '.pdf'
 setwd("C:/Users/Fulano/Desktop/Pasta01/DOES")
 
-# Termos da busca
-buscar_por <- c("Gazeta") # exemplo
-nao_incluir <- c("Gazeta do Povo") # exemplo
-
 # Data da busca
-dia_inicial <- ("2022-04-30") # exemplo, formato ano/mes/dia
+dia_inicial <- ("2024-04-30") # exemplo, formato ano/mes/dia
 dia_final <- ("2024-05-07") # exemplo, formato ano/mes/dia
+
+# Termos de busca
+buscar_por <- paste0(c("Educação Infantil", "Sistema de educação"), collapse = "|") # exemplo
+nao_incluir <- paste0(c("Secretaria de Estado da Educação"), collapse = "|") # exemplo
 
 
 get_file <- function(date) {
@@ -47,13 +48,24 @@ file <- list.files(pattern=".pdf")
 corp <- Corpus(URISource(file),
                readerControl = list(reader = readPDF))
 
-monitor <- str_contains(corp, 
-                        buscar_por, 
-                        logic = 'or',
-                        ignore.case = TRUE) & str_contains(corp,
-                                                           nao_incluir,
-                                                           logic = "not",
-                                                           ignore.case = TRUE)
+for(i in names(corp)){
+  x1 <- as.data.frame(unlist(corp[[i]]))
+  x1 <- x1 %>% setNames(c("V1X")) %>%
+    filter(str_detect(V1X,
+                      regex(buscar_por, ignore_case = T),
+                      negate = F) & 
+             str_detect(V1X,
+                        regex(nao_incluir, ignore_case = T),
+                        negate = T))  %>%
+    assign(value = .,
+           x = paste0(c("DO", gsub("-|.pdf", "", i), "ES", "_out"), collapse = ""),
+           envir = globalenv())
+}
 
-monitor # se = FALSE, o termo nao aparece; se = TRUE, o termo aparece no Diario
-
+vy1A <- do.call(rbind, mget(ls(pattern="_out")))
+rm(list = ls(pattern="_out"))
+vy1A <- setDT(as.data.frame(vy1A), keep.rownames = T)
+vy1A <- vy1A[,1]
+vy1A <- as.data.frame(str_split_fixed(vy1A$rn, "_out.content", 2)) 
+colnames(vy1A) <- c("DOES", "Pagina")
+vy1A
