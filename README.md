@@ -65,51 +65,66 @@ file <- list.files(pattern=".pdf")
 corp <- Corpus(URISource(file),
                readerControl = list(reader = readPDF))
 
+cluster1A <- as.data.frame(str_split(buscar_por, "\\|"), col.names =  "V1")
+cluster1A$V2 <- gsub(" ", "\\\\s*(.*?)\\\\s*", cluster1A$V1)
+cluster1A$V3 <- as.character(paste0(cluster1A$V2, "|", cluster1A$V1))
+cluster1X <- paste0(cluster1A[,3], collapse = "|")
+
+cluster2A <- as.data.frame(str_split(nao_incluir, "\\|"), col.names =  "V1")
+cluster2A$V2 <- gsub(" ", "\\\\s*(.*?)\\\\s*", cluster2A$V1)
+cluster2A$V3 <- as.character(paste0(cluster2A$V2, "|", cluster2A$V1))
+cluster2X <- paste0(cluster2A[,3], collapse = "|")
+
 for(i in names(corp)){
   x1 <- as.data.frame(unlist(corp[[i]]))
   x1 <- x1 %>% setNames(c("V1X")) %>%
     filter(str_detect(V1X,
-                      regex(buscar_por, ignore_case = T),
+                      regex(cluster1X, ignore_case = T),
                       negate = F) & 
              str_detect(V1X,
-                        regex(nao_incluir, ignore_case = T),
+                        regex(cluster2X, ignore_case = T),
                         negate = T))  %>%
     assign(value = .,
            x = paste0(c("DO", gsub("-|.pdf", "", i), "ES", "_out"), collapse = ""),
            envir = globalenv())
 }
 
-vy1A <- do.call(rbind, mget(ls(pattern="_out")))
+vy1A <- dplyr::bind_rows(mget(ls(pattern="_out")), .id = 'source')
 rm(list = ls(pattern="_out"))
 vy1A <- setDT(as.data.frame(vy1A), keep.rownames = T)
-vy1A <- vy1A[,1]
-vy1A <- as.data.frame(str_split_fixed(vy1A$rn, "_out.content", 2)) 
+vy1A <- vy1A[,1:2]
+vy1A$rn <- gsub("content", "", vy1A$rn)
+vy1A$source <- gsub("_out", "", vy1A$source)
+vy1A <- vy1A[,c("source","rn")] 
 colnames(vy1A) <- c("DOES", "Pagina")
 ````
 Ao final, o objeto ```vy1A``` retorna um ```data.frame``` com o nome do DOES onde o termo foi encontrado e a respectiva página:
 ````R
 vy1A
-                DOES Pagina
-1  DO20240430_9053ES      4
-2  DO20240430_9053ES    108
-3  DO20240430_9053ES    111
-4  DO20240430_9053ES    112
-5  DO20240430_9053ES    117
-6  DO20240502_9059ES     96
-7  DO20240502_9059ES    106
-8  DO20240503_9064ES    187
-9  DO20240503_9064ES    193
-10 DO20240506_9067ES      7
-11 DO20240506_9067ES    158
-12 DO20240506_9067ES    178
-13 DO20240506_9067ES    179
-14 DO20240506_9067ES    180
-15 DO20240506_9067ES    191
-16 DO20240506_9067ES    198
-17 DO20240506_9067ES    199
-18 DO20240506_9067ES    200
-19 DO20240506_9067ES    201
-20 DO20240506_9067ES    212
+                 DOES Pagina
+ 1: DO20240430_9053ES      4
+ 2: DO20240430_9053ES    108
+ 3: DO20240430_9053ES    109
+ 4: DO20240430_9053ES    111
+ 5: DO20240430_9053ES    112
+ 6: DO20240430_9053ES    117
+ 7: DO20240502_9059ES     96
+ 8: DO20240502_9059ES    106
+ 9: DO20240503_9064ES    187
+10: DO20240503_9064ES    193
+11: DO20240506_9067ES      7
+12: DO20240506_9067ES    158
+13: DO20240506_9067ES    178
+14: DO20240506_9067ES    179
+15: DO20240506_9067ES    180
+16: DO20240506_9067ES    191
+17: DO20240506_9067ES    198
+18: DO20240506_9067ES    199
+19: DO20240506_9067ES    200
+20: DO20240506_9067ES    201
+21: DO20240506_9067ES    212
+22: DO20240507_9070ES     83
+                 DOES Pagina
 ````
 DO20240430 = Diário Oficial 2024-04-30 [ano, mês, dia] <br>
 9067ES = Identificador único do arquivo (caso haja mais de 1 DO por dia).
