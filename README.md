@@ -65,12 +65,13 @@ file <- list.files(pattern=".pdf")
 corp <- Corpus(URISource(file),
                readerControl = list(reader = readPDF))
 
-cluster1A <- as.data.frame(str_split(buscar_por, "\\|"), col.names =  "V1")
+cluster1A <- as.data.frame(str_split(buscar_por, "\\|"))
+colnames(cluster1A) <- "V1"
 cluster1A$V2 <- gsub(" ", "\\\\s*(.*?)\\\\s*", cluster1A$V1)
 cluster1A$V3 <- as.character(paste0(cluster1A$V2, "|", cluster1A$V1))
 cluster1X <- paste0(cluster1A[,3], collapse = "|")
-
-cluster2A <- as.data.frame(str_split(nao_incluir, "\\|"), col.names =  "V1")
+cluster2A <- as.data.frame(str_split(nao_incluir, "\\|"))
+colnames(cluster2A) <- "V1"
 cluster2A$V2 <- gsub(" ", "\\\\s*(.*?)\\\\s*", cluster2A$V1)
 cluster2A$V3 <- as.character(paste0(cluster2A$V2, "|", cluster2A$V1))
 cluster2X <- paste0(cluster2A[,3], collapse = "|")
