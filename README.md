@@ -128,3 +128,16 @@ vy1A
 ````
 DO20240430 = Diário Oficial 2024-04-30 [ano, mês, dia] <br>
 9067ES = Identificador único do arquivo (caso haja mais de 1 DO por dia).
+## Encontrando termos associados
+O segundo script ("Monitoramento DOES_part2.R") constrói uma nuvem com as palavras mais recorrentes nas páginas em que aparecem os termos de busca. <br>
+Resultado do nosso exemplo:<br>
+<p align="left">
+<a href="_blank">
+<img src="https://github.com/iagocnunes/DOES/blob/main/img/cloudEducacaoInfantil_btw.png" width="600" alt="Ciências Sociais - UFES">
+</a>
+</p>
+<p align="left">
+<a href="_blank">
+<img src="https://github.com/iagocnunes/DOES/blob/main/img/cloudSistemadeeducacao_btw.png" width="600" alt="Ciências Sociais - UFES">
+</a>
+</p>
